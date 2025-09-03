@@ -1,0 +1,27 @@
+name: BSP Build
+
+on:
+  push:
+    branches:
+      - main   # change to your branch
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64]  # labels of your runner
+
+    steps:
+      # Optional: checkout GitHub repo if you need workflow files
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Optional: prepare /home/test if needed
+      - name: Prepare workspace
+        run: |
+          mkdir -p /home/test
+          mkdir -p /build
+          sudo chown -R $USER:$USER /home/test /build
+
+      # Run your BSP build script
+      - name: Build the BSP
+        run: |
+          /home/test/build_test.sh
