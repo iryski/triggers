@@ -1,0 +1,33 @@
+name: BSP Yocto Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted  # your container runner
+    steps:
+      # Checkout the repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # List files in the repository (optional, for debugging)
+      - name: List repository files
+        run: ls -l ${{ github.workspace }}
+
+      # Run your BSP build script
+      - name: Build the BSP
+        run: /home/test/build_test.sh
+
+      # List build outputs
+      - name: List build outputs
+        run: ls -l /build
+
+      # Upload build outputs as artifacts
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bsp-build
+          path: /build
