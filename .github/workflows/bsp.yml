@@ -1,0 +1,30 @@
+name: BSP Yocto Build
+
+on:
+  push:
+    branches:
+      - main   # Change to your branch if needed
+
+jobs:
+  bsp_build:
+    runs-on: [self-hosted, Linux, X64]  
+    container:
+      image: ubuntu/yocto:22.04-github
+      user: test
+      options: --privileged --net=host
+      env:
+        TEST_REPO: https://github.com/ccalinus/bsp-example
+        TEST_TOKEN: ${{ secrets.TEST_TOKEN }}
+      volumes:
+        - /home/test:/home/test
+        - /build:/build
+      working-directory: /home/test
+
+    steps:
+      # Optional: checkout workflow repository if you need workflow files
+      - name: Checkout workflow repo
+        uses: actions/checkout@v4
+
+      # Ensure the build script is executable
+      - name: Prepare build script
+        run
