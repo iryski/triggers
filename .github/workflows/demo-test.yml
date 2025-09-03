@@ -1,0 +1,16 @@
+name: Build BSP
+
+on:
+  workflow_dispatch:   
+  push:                
+
+jobs:
+  build:
+    runs-on: self-hosted   
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run BSP build script
+        run: |
+          /home/test/build_test.sh
