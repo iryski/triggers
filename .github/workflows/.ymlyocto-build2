@@ -1,0 +1,25 @@
+name: Yocto Docker Build
+
+on:
+  push:
+    branches:
+      - main  # or any branch you want to trigger on
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, x64]  # match your runner labels
+
+    steps:
+      - name: Checkout repo (optional, if your build needs it)
+        uses: actions/checkout@v4
+
+      - name: Pull Docker image
+        run: docker pull ubuntu/yocto:22.04-github
+
+      - name: Run Yocto Docker build
+        run: |
+          docker run --user=test --privileged --net=host -it --rm \
+            -v /home/test:/home/test \
+            -v /build:/build \
+            -w /home/test \
+            ubuntu/yocto:22.04-github /bin/bash
